@@ -27,14 +27,15 @@ namespace CameraDetector4
             var ipAddress = getIP();
             var cameraNames = new List<string>();
             var url = args.Length > 0 ? args[0] : "";
-
-            List<KeyValuePair<string,Process>> procs = Win32Processes.GetProcessesLockingFile("svchost", ids);
-            foreach (var proc in procs)
+            foreach (var id in ids)
             {
-                Console.WriteLine($"{proc.Key},{proc.Value.ProcessName}");
-                cameraNames.Add(proc.Key);
+                List<KeyValuePair<string, Process>> procs = Win32Processes.GetProcessesLockingFile("svchost", new List<string[]> { id });
+                foreach (var proc in procs)
+                {
+                    Console.WriteLine($"{proc.Key},{proc.Value.ProcessName}");
+                    cameraNames.Add(proc.Key);
+                }
             }
-
             if (cameraNames.Count > 0)
             {
                 object data = new { MachineName = machineName, IPAddress = ipAddress, CameraNames = string.Join(",", cameraNames) };
