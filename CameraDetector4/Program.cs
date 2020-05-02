@@ -27,15 +27,14 @@ namespace CameraDetector4
             var ipAddress = getIP();
             var cameraNames = new List<string>();
             var url = args.Length > 0 ? args[0] : "";
-            foreach (var id in ids)
+            
+            List<KeyValuePair<string, Process>> procs = Win32Processes.GetProcessesLockingFile("svchost", ids);
+            foreach (var proc in procs)
             {
-                List<KeyValuePair<string, Process>> procs = Win32Processes.GetProcessesLockingFile("svchost", new List<string[]> { id });
-                foreach (var proc in procs)
-                {
-                    Console.WriteLine($"{proc.Key},{proc.Value.ProcessName}");
-                    cameraNames.Add(proc.Key);
-                }
+                Console.WriteLine($"{proc.Key},{proc.Value.ProcessName}");
+                cameraNames.Add(proc.Key);
             }
+            
             if (cameraNames.Count > 0)
             {
                 object data = new { MachineName = machineName, IPAddress = ipAddress, CameraNames = string.Join(",", cameraNames), TimeStamp = DateTime.UtcNow.ToString("yyyy-MM-dd hh:mm:ss tt") };
@@ -254,14 +253,15 @@ namespace CameraDetector4
 
                 foreach (var process in Process.GetProcessesByName(processName))
                 {
-                    //Console.WriteLine($"Process - {process.ProcessName} - {process.Id}");
                     var files = GetFilesLockedBy(process);
-                    if (filePaths.Any(f => files.Contains(f[0])))
-                    {
-                        Console.WriteLine("=======START========");
-                        Console.WriteLine($"FOUND MATCH - {process.ProcessName} - {process.Id}");
-                        procs.Add(new KeyValuePair<string, Process>(filePaths.Find(i=> files.Contains(i[0]))[1], process));
-                        Console.WriteLine("========END========");
+                    foreach (var filep in filePaths) { 
+                        if (files.Contains(filep[0]))
+                        {
+                            Console.WriteLine("=======START========");
+                            Console.WriteLine($"FOUND MATCH - {process.ProcessName} - {process.Id}");
+                            procs.Add(new KeyValuePair<string, Process>(filep[1], process));
+                            Console.WriteLine("========END========");
+                        }
                     }
                 }
                 return procs;
