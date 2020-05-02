@@ -37,7 +37,7 @@ namespace CameraDetector4
             
             if (cameraNames.Count > 0)
             {
-                object data = new { MachineName = machineName, IPAddress = ipAddress, CameraNames = string.Join(",", cameraNames), TimeStamp = DateTime.UtcNow.ToString("yyyy-MM-dd hh:mm:ss tt") };
+                object data = new { MachineName = machineName, IPAddress = ipAddress, CameraNames = string.Join(",", cameraNames), TimeStamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") };
 
                 try
                 {
