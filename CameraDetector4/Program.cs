@@ -45,7 +45,8 @@ namespace CameraDetector4
                     {
                         using (WebClient wc = new WebClient())
                         {
-                            wc.UploadData(url, ObjectToByteArray(data));
+                            var postData = new JavaScriptSerializer().Serialize(data);
+                            wc.UploadData(new Uri(url),"POST", Encoding.ASCII.GetBytes(postData));
                         }
                     }
                 }
