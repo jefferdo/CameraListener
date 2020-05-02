@@ -12,18 +12,21 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace CameraDetector4
 {
     class Program
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static void Main(string[] args)
         {
             var ids = GetCameraIds();
             var machineName = System.Environment.MachineName;
             var ipAddress = getIP();
             var cameraNames = new List<string>();
-            var url = args[0];
+            var url = args.Length > 0 ? args[0] : "";
 
             List<KeyValuePair<string,Process>> procs = Win32Processes.GetProcessesLockingFile("svchost", ids);
             foreach (var proc in procs)
@@ -32,16 +35,25 @@ namespace CameraDetector4
                 cameraNames.Add(proc.Key);
             }
 
-            object data = new { MachineName = machineName, IPAddress = ipAddress, CameraNames = string.Join(",", cameraNames) };
+            if (cameraNames.Count > 0)
+            {
+                object data = new { MachineName = machineName, IPAddress = ipAddress, CameraNames = string.Join(",", cameraNames) };
 
-            try
-            {
-                WebClient wc = new WebClient();
-                wc.UploadData(url, ObjectToByteArray(data));
-            }
-            catch(Exception ex)
-            {
-                Console.Write(ex.Message);
+                try
+                {
+                    if (!string.IsNullOrEmpty(url))
+                    {
+                        using (WebClient wc = new WebClient())
+                        {
+                            wc.UploadData(url, ObjectToByteArray(data));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex.Message);
+                }
+                log.Info($"Active Camera(s) Found - {new JavaScriptSerializer().Serialize(data)}");
             }
             Console.ReadLine();
         }
