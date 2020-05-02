@@ -55,7 +55,6 @@ namespace CameraDetector4
                 }
                 log.Info($"Active Camera(s) Found - {new JavaScriptSerializer().Serialize(data)}");
             }
-            Console.ReadLine();
         }
 
         public static byte[] ObjectToByteArray(Object obj)
