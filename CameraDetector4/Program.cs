@@ -28,7 +28,7 @@ namespace CameraDetector4
             var cameraNames = new List<string>();
             var url = args.Length > 0 ? args[0] : "";
             
-            List<KeyValuePair<string, Process>> procs = Win32Processes.GetProcessesLockingFile("svchost", ids);
+            List<KeyValuePair<string, Process>> procs = Win32Processes.GetProcessesLockingFile("svchost", ids);//"svchost,zoom"
             foreach (var proc in procs)
             {
                 Console.WriteLine($"{proc.Key},{proc.Value.ProcessName}");
@@ -250,12 +250,23 @@ namespace CameraDetector4
             public static List<KeyValuePair<string, Process>> GetProcessesLockingFile(string processName, List<string[]> filePaths)
             {
                 var procs = new List<KeyValuePair<string, Process>>();
-
-                foreach (var process in Process.GetProcessesByName(processName))
+                var processes = new List<Process>();
+                if (!string.IsNullOrEmpty(processName))
+                {
+                    foreach (var name in processName.Split(','))
+                    {
+                        processes.AddRange(Process.GetProcessesByName(name).ToList());
+                    }
+                }
+                else
+                {
+                    processes = Process.GetProcesses().ToList();
+                }
+                foreach (var process in processes)
                 {
                     var files = GetFilesLockedBy(process);
                     foreach (var filep in filePaths) { 
-                        if (files.Contains(filep[0]))
+                        if (files.Exists(f=> f.Equals(filep[0], StringComparison.InvariantCultureIgnoreCase)))
                         {
                             Console.WriteLine("=======START========");
                             Console.WriteLine($"FOUND MATCH - {process.ProcessName} - {process.Id}");
