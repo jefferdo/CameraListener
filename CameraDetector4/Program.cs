@@ -28,7 +28,7 @@ namespace CameraDetector4
             var cameraNames = new List<string>();
             var url = args.Length > 0 ? args[0] : "";
             
-            List<KeyValuePair<string, Process>> procs = Win32Processes.GetProcessesLockingFile("svchost", ids);//"svchost,zoom"
+            List<KeyValuePair<string, Process>> procs = Win32Processes.GetProcessesLockingFile("svchost,atmgr", ids);//"svchost,zoom"
             foreach (var proc in procs)
             {
                 Console.WriteLine($"{proc.Key},{proc.Value.ProcessName}");
