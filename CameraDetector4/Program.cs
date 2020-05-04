@@ -53,6 +53,7 @@ namespace CameraDetector4
                 catch (Exception ex)
                 {
                     Console.Write(ex.Message);
+                    log.Error(new JavaScriptSerializer().Serialize(ex));
                 }
                 log.Info($"Active Camera(s) Found - {new JavaScriptSerializer().Serialize(data)}");
             }
