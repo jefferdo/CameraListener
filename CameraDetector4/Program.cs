@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -27,14 +28,14 @@ namespace CameraDetector4
             var ipAddress = getIP();
             var cameraNames = new List<string>();
             var url = args.Length > 0 ? args[0] : "";
-            
+
             List<KeyValuePair<string, Process>> procs = Win32Processes.GetProcessesLockingFile("svchost,atmgr", ids);//"svchost,zoom"
             foreach (var proc in procs)
             {
                 Console.WriteLine($"{proc.Key},{proc.Value.ProcessName}");
                 cameraNames.Add(proc.Key);
             }
-            
+
             if (cameraNames.Count > 0)
             {
                 object data = new { MachineName = machineName, IPAddress = ipAddress, CameraNames = string.Join(",", cameraNames), TimeStamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") };
@@ -43,19 +44,27 @@ namespace CameraDetector4
                 {
                     if (!string.IsNullOrEmpty(url))
                     {
+                        /*
                         using (WebClient wc = new WebClient())
                         {
                             var postData = new JavaScriptSerializer().Serialize(data);
                             wc.UploadData(new Uri(url),"POST", Encoding.ASCII.GetBytes(postData));
                         }
+                        */
+
+                        var client = new RestClient(url);
+                        var request = new RestRequest(Method.POST);
+                        request.AddHeader("content-type", "application/json");
+                        request.AddCookie("webcam_monitor_session", "eyJpdiI6IlhJcUpZYTVMa2pDemF4Mk5ydEQyVmc9PSIsInZhbHVlIjoiMGRoQ2MzQlBLVlVndFBJeFEwZEFCSWtjRGxBWnZwSHdwdmtUbGZvYmVuVHFUVTJpb2ttdWQ0ZUt3d0RVQVRSQyIsIm1hYyI6IjE4YTU3ZTQxMzVlMTcyZWE1NTRjNWUxMDc1N2U3ZjU3NTI5OTI4YjBkNTY4N2I2YzViNDM1OGY3YzUwNjU1NDkifQ%3D%3D");
+                        request.AddParameter("application/json", "{\n\t\"MachineName\": \""+ machineName + "\",\n\t\"CameraNames\": \""+ string.Join(",", cameraNames) + "\",\n\t\"TimeStamp\": \""+ DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\"\n}", ParameterType.RequestBody);
+                        IRestResponse response = client.Execute(request);
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.Write(ex.Message);
-                    log.Error(new JavaScriptSerializer().Serialize(ex));
                 }
-                log.Info($"Active Camera(s) Found - {new JavaScriptSerializer().Serialize(data)}");
+
             }
         }
 
@@ -89,7 +98,7 @@ namespace CameraDetector4
                 PowerShellInstance.AddScript("$b = (Get-PnpDevice -Class 'image' -Status ok | Get-PnpDeviceProperty -KeyName {\"DEVPKEY_Device_PDOName\", \"DEVPKEY_Device_DeviceDesc\"}).data -join ','");
                 PowerShellInstance.AddScript("@($a, $b)");
 
-                
+
                 // invoke execution on the pipeline (collecting output)
                 Collection<PSObject> PSOutput = PowerShellInstance.Invoke();
                 var ids = new List<string[]>();
@@ -100,7 +109,7 @@ namespace CameraDetector4
                     // object may be present here. check for null to prevent potential NRE.
                     if (outputItem != null && outputItem.BaseObject.ToString().Length != 0)
                     {
-                        //TODO: do something with the output item 
+                        //TODO: do something with the output item
                         ids.Add(outputItem.BaseObject.ToString().Split(','));
 
                     }
@@ -266,7 +275,7 @@ namespace CameraDetector4
                 foreach (var process in processes)
                 {
                     var files = GetFilesLockedBy(process);
-                    foreach (var filep in filePaths) { 
+                    foreach (var filep in filePaths) {
                         if (files.Exists(f=> f.Equals(filep[0], StringComparison.InvariantCultureIgnoreCase)))
                         {
                             Console.WriteLine("=======START========");
