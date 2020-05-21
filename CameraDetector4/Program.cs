@@ -11,16 +11,15 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace CameraDetector4
 {
-    class Program
+    internal class Program
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var ids = GetCameraIds();
             var machineName = System.Environment.MachineName;
@@ -46,7 +45,7 @@ namespace CameraDetector4
                         using (WebClient wc = new WebClient())
                         {
                             var postData = new JavaScriptSerializer().Serialize(data);
-                            wc.UploadData(new Uri(url),"POST", Encoding.ASCII.GetBytes(postData));
+                            wc.UploadData(new Uri(url), "POST", Encoding.ASCII.GetBytes(postData));
                         }
                     }
                 }
@@ -68,6 +67,7 @@ namespace CameraDetector4
                 return ms.ToArray();
             }
         }
+
         internal static string getIP()
         {
             string localIP;
@@ -79,6 +79,7 @@ namespace CameraDetector4
             }
             return localIP;
         }
+
         internal static List<string[]> GetCameraIds()
         {
             using (PowerShell PowerShellInstance = PowerShell.Create())
@@ -88,7 +89,6 @@ namespace CameraDetector4
                 PowerShellInstance.AddScript("$a = (Get-PnpDevice -Class 'camera' -Status ok | Get-PnpDeviceProperty -KeyName {\"DEVPKEY_Device_PDOName\", \"DEVPKEY_Device_DeviceDesc\"}).data -join ','");
                 PowerShellInstance.AddScript("$b = (Get-PnpDevice -Class 'image' -Status ok | Get-PnpDeviceProperty -KeyName {\"DEVPKEY_Device_PDOName\", \"DEVPKEY_Device_DeviceDesc\"}).data -join ','");
                 PowerShellInstance.AddScript("@($a, $b)");
-
 
                 // invoke execution on the pipeline (collecting output)
                 Collection<PSObject> PSOutput = PowerShellInstance.Invoke();
@@ -102,13 +102,13 @@ namespace CameraDetector4
                     {
                         //TODO: do something with the output item
                         ids.Add(outputItem.BaseObject.ToString().Split(','));
-
                     }
                 }
 
                 return ids;
             }
         }
+
         internal class Win32API
         {
             [DllImport("ntdll.dll")]
@@ -126,13 +126,16 @@ namespace CameraDetector4
 
             [DllImport("kernel32.dll")]
             public static extern IntPtr OpenProcess(ProcessAccessFlags dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, int dwProcessId);
+
             [DllImport("kernel32.dll")]
             public static extern int CloseHandle(IntPtr hObject);
+
             [DllImport("kernel32.dll", SetLastError = true)]
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern bool DuplicateHandle(IntPtr hSourceProcessHandle,
                ushort hSourceHandle, IntPtr hTargetProcessHandle, out IntPtr lpTargetHandle,
                uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwOptions);
+
             [DllImport("kernel32.dll")]
             public static extern IntPtr GetCurrentProcess();
 
@@ -242,9 +245,9 @@ namespace CameraDetector4
             public const uint STATUS_INFO_LENGTH_MISMATCH = 0xC0000004;
             public const int DUPLICATE_SAME_ACCESS = 0x2;
         }
+
         public class Win32Processes
         {
-
             /// <summary>
             /// Return a list of processes that hold on the given file.
             /// </summary>
@@ -266,8 +269,9 @@ namespace CameraDetector4
                 foreach (var process in processes)
                 {
                     var files = GetFilesLockedBy(process);
-                    foreach (var filep in filePaths) {
-                        if (files.Exists(f=> f.Equals(filep[0], StringComparison.InvariantCultureIgnoreCase)))
+                    foreach (var filep in filePaths)
+                    {
+                        if (files.Exists(f => f.Equals(filep[0], StringComparison.InvariantCultureIgnoreCase)))
                         {
                             Console.WriteLine("=======START========");
                             Console.WriteLine($"FOUND MATCH - {process.ProcessName} - {process.Id}");
@@ -286,17 +290,17 @@ namespace CameraDetector4
             {
                 var outp = new List<string>();
 
-                ThreadStart ts = delegate {
-                    /*try
+                ThreadStart ts = delegate
+                {
+                    try
                     {
                         outp = UnsafeGetFilesLockedBy(process);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                    }*/
-                    outp = UnsafeGetFilesLockedBy(process);
+                        Console.WriteLine(ex.Message);
+                    }
                 };
-
 
                 try
                 {
@@ -308,11 +312,15 @@ namespace CameraDetector4
                         {
                             t.Abort();
                         }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                 }
 
                 return outp;
@@ -358,8 +366,9 @@ namespace CameraDetector4
                 }*/
             }
 
-            const int CNST_SYSTEM_HANDLE_INFORMATION = 16;
-            const uint STATUS_INFO_LENGTH_MISMATCH = 0xc0000004;
+            private const int CNST_SYSTEM_HANDLE_INFORMATION = 16;
+            private const uint STATUS_INFO_LENGTH_MISMATCH = 0xc0000004;
+
             private static string GetFilePath(Win32API.SYSTEM_HANDLE_INFORMATION sYSTEM_HANDLE_INFORMATION, Process process)
             {
                 IntPtr m_ipProcessHwnd = Win32API.OpenProcess(Win32API.ProcessAccessFlags.All, false, process.Id);
@@ -383,7 +392,6 @@ namespace CameraDetector4
                 Win32API.NtQueryObject(ipHandle, (int)Win32API.ObjectInformationClass.ObjectBasicInformation, ipBasic, Marshal.SizeOf(objBasic), ref nLength);
                 objBasic = (Win32API.OBJECT_BASIC_INFORMATION)Marshal.PtrToStructure(ipBasic, objBasic.GetType());
                 Marshal.FreeHGlobal(ipBasic);
-
 
                 ipObjectType = Marshal.AllocHGlobal(objBasic.TypeInformationLength);
                 nLength = objBasic.TypeInformationLength;
@@ -532,7 +540,6 @@ namespace CameraDetector4
                     lstHandles.Add(shHandle);
                 }
                 return lstHandles;
-
             }
 
             private static bool Is64Bits()
