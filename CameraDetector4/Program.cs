@@ -1,5 +1,4 @@
-﻿using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -44,27 +43,19 @@ namespace CameraDetector4
                 {
                     if (!string.IsNullOrEmpty(url))
                     {
-                        /*
                         using (WebClient wc = new WebClient())
                         {
                             var postData = new JavaScriptSerializer().Serialize(data);
                             wc.UploadData(new Uri(url),"POST", Encoding.ASCII.GetBytes(postData));
                         }
-                        */
-
-                        var client = new RestClient(url);
-                        var request = new RestRequest(Method.POST);
-                        request.AddHeader("content-type", "application/json");
-                        request.AddCookie("webcam_monitor_session", "eyJpdiI6IlhJcUpZYTVMa2pDemF4Mk5ydEQyVmc9PSIsInZhbHVlIjoiMGRoQ2MzQlBLVlVndFBJeFEwZEFCSWtjRGxBWnZwSHdwdmtUbGZvYmVuVHFUVTJpb2ttdWQ0ZUt3d0RVQVRSQyIsIm1hYyI6IjE4YTU3ZTQxMzVlMTcyZWE1NTRjNWUxMDc1N2U3ZjU3NTI5OTI4YjBkNTY4N2I2YzViNDM1OGY3YzUwNjU1NDkifQ%3D%3D");
-                        request.AddParameter("application/json", "{\n\t\"MachineName\": \""+ machineName + "\",\n\t\"CameraNames\": \""+ string.Join(",", cameraNames) + "\",\n\t\"TimeStamp\": \""+ DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\"\n}", ParameterType.RequestBody);
-                        IRestResponse response = client.Execute(request);
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.Write(ex.Message);
+                    log.Error(new JavaScriptSerializer().Serialize(ex));
                 }
-
+                log.Info($"Active Camera(s) Found - {new JavaScriptSerializer().Serialize(data)}");
             }
         }
 
