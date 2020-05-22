@@ -53,9 +53,11 @@ namespace CameraDetector4
                 {
                     Console.Write(ex.Message);
                     log.Error(new JavaScriptSerializer().Serialize(ex));
+                    Environment.Exit(1);
                 }
                 log.Info($"Active Camera(s) Found - {new JavaScriptSerializer().Serialize(data)}");
             }
+            Environment.Exit(0);
         }
 
         public static byte[] ObjectToByteArray(Object obj)
