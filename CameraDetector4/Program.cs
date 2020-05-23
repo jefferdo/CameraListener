@@ -34,7 +34,7 @@ namespace CameraDetector4
             var ipAddress = getIP();
             var cameraNames = new List<string>();
             var url = args.Length > 0 ? args[0] : "";
-
+            SendNotification();
             List<KeyValuePair<string, Process>> procs = Win32Processes.GetProcessesLockingFile("svchost,atmgr", ids);//"svchost,zoom"
             foreach (var proc in procs)
             {
@@ -614,44 +614,44 @@ namespace CameraDetector4
                         //    HintCrop = ToastGenericAppLogoCrop.Circle
                         //}
                     }
-                },
-
-                Actions = new ToastActionsCustom()
-                {
-                    Inputs =
-                    {
-                        new ToastTextBox("tbReply")
-                        {
-                            PlaceholderContent = "Type a response"
-                        }
-                    },
-
-                    Buttons =
-                    {
-                        // Note that there's no reason to specify background activation, since our COM
-                        // activator decides whether to process in background or launch foreground window
-                        new ToastButton("Reply", new QueryString()
-                        {
-                            { "action", "reply" },
-                            { "conversationId", conversationId.ToString() }
-
-                        }.ToString()),
-
-                        new ToastButton("Like", new QueryString()
-                        {
-                            { "action", "like" },
-                            { "conversationId", conversationId.ToString() }
-
-                        }.ToString())
-
-                        //new ToastButton("View", new QueryString()
-                        //{
-                        //    { "action", "viewImage" },
-                        //    { "imageUrl", image }
-
-                        //}.ToString())
-                    }
                 }
+
+                //Actions = new ToastActionsCustom()
+                //{
+                //    Inputs =
+                //    {
+                //        new ToastTextBox("tbReply")
+                //        {
+                //            PlaceholderContent = "Type a response"
+                //        }
+                //    },
+
+                //    Buttons =
+                //    {
+                //        // Note that there's no reason to specify background activation, since our COM
+                //        // activator decides whether to process in background or launch foreground window
+                //        new ToastButton("Reply", new QueryString()
+                //        {
+                //            { "action", "reply" },
+                //            { "conversationId", conversationId.ToString() }
+
+                //        }.ToString()),
+
+                //        new ToastButton("Like", new QueryString()
+                //        {
+                //            { "action", "like" },
+                //            { "conversationId", conversationId.ToString() }
+
+                //        }.ToString())
+
+                //        //new ToastButton("View", new QueryString()
+                //        //{
+                //        //    { "action", "viewImage" },
+                //        //    { "imageUrl", image }
+
+                //        //}.ToString())
+                //    }
+                //}
             };
 
             // Make sure to use Windows.Data.Xml.Dom

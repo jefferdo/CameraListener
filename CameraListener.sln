@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraDetector", "CameraDet
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "CameraDetectorPackageProject", "DesktopToastsPackageProject\CameraDetectorPackageProject.wapproj", "{FC77102B-6837-412D-9099-3F9DF5E73D75}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "DesktopToastsSetupProject", "DesktopToastsSetupProject\DesktopToastsSetupProject.wixproj", "{6592E67D-A611-4643-B73F-3F1A7C1C5F50}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "CameraDetectorSetupProject", "DesktopToastsSetupProject\CameraDetectorSetupProject.wixproj", "{6592E67D-A611-4643-B73F-3F1A7C1C5F50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -55,9 +55,9 @@
             <Component Id="QueryString.NETCore.dll" Guid="16817a82-b30c-4cc6-acf4-a68055c6016a">
                 <File Id="QueryString.NETCore.dll" Name="QueryString.NETCore.dll" Source="$(var.CameraDetector.TargetDir)QueryString.NETCore.dll"/>
             </Component>
-            <Component Id="System.Xml.ReaderWriter.dll" Guid="79cb87d7-96c9-4d21-915b-8472963b195f">
+            <!--<Component Id="System.Xml.ReaderWriter.dll" Guid="79cb87d7-96c9-4d21-915b-8472963b195f">
                 <File Id="System.Xml.ReaderWriter.dll" Name="System.Xml.ReaderWriter.dll" Source="$(var.CameraDetector.TargetDir)System.Xml.ReaderWriter.dll"/>
-            </Component>
+            </Component>-->
 
             <!--Tell WiX to install the shortcut-->
             <ComponentRef Id="ApplicationShortcut"/>
