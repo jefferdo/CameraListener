@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>PYXLE-000202</Machine>
+    <WindowsUser>chinthana.jayawarden</WindowsUser>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetOsVersion>10.0</TargetOsVersion>
+    <TargetOsDescription>Windows 10.0</TargetOsDescription>
+    <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>WindowsNotifications.CameraDetectorPackaged</PackageIdentityName>
+    <PackageIdentityPublisher>CN=chinthana.jayawardena</PackageIdentityPublisher>
+    <IntermediateOutputPath>D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\obj\Debug\</IntermediateOutputPath>
+    <RemoteDeploymentType></RemoteDeploymentType>
+    <PackageRegistrationPath></PackageRegistrationPath>
+    <RemoveNonLayoutFiles>true</RemoveNonLayoutFiles>
+    <DeployOptionalPackages>false</DeployOptionalPackages>
+    <WindowsSdkPath></WindowsSdkPath>
+    <LayoutDir>D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\bin\AnyCPU\Debug\AppX</LayoutDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\bin\AnyCPU\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\Assets\LockScreenLogo.scale-200.png">
+      <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\Assets\Square150x150Logo.scale-200.png">
+      <PackagePath>Assets\Square150x150Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\Assets\Square44x44Logo.scale-200.png">
+      <PackagePath>Assets\Square44x44Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\Assets\StoreLogo.png">
+      <PackagePath>Assets\StoreLogo.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\Assets\Wide310x150Logo.scale-200.png">
+      <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\bin\AnyCPU\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\chinthana.jayawarden\.nuget\packages\log4net\2.0.8\lib\net45-full\log4net.dll">
+      <PackagePath>CameraDetector\log4net.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\chinthana.jayawarden\.nuget\packages\microsoft.powershell.5.referenceassemblies\1.1.0\lib\net4\System.Management.Automation.dll">
+      <PackagePath>CameraDetector\System.Management.Automation.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\chinthana.jayawarden\.nuget\packages\microsoft.toolkit.uwp.notifications\6.0.0\lib\net461\Microsoft.Toolkit.Uwp.Notifications.dll">
+      <PackagePath>CameraDetector\Microsoft.Toolkit.Uwp.Notifications.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\chinthana.jayawarden\.nuget\packages\querystring.net\1.0.0\lib\dotnet\QueryString.NETCore.dll">
+      <PackagePath>CameraDetector\QueryString.NETCore.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\chinthana.jayawarden\.nuget\packages\system.valuetuple\4.4.0\lib\net47\System.ValueTuple.dll">
+      <PackagePath>CameraDetector\System.ValueTuple.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\Dll\System.Runtime.WindowsRuntime.4.6.0\ref\netstandard2.0\System.Runtime.WindowsRuntime.dll">
+      <PackagePath>CameraDetector\System.Runtime.WindowsRuntime.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\Dll\System.Runtime.WindowsRuntime.UI.Xaml.4.6.0\ref\netstandard2.0\System.Runtime.WindowsRuntime.UI.Xaml.dll">
+      <PackagePath>CameraDetector\System.Runtime.WindowsRuntime.UI.Xaml.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\CameraDetector4\log4net.config">
+      <PackagePath>CameraDetector\log4net.config</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\CameraDetector4\bin\Debug\CameraDetector.exe">
+      <PackagePath>CameraDetector\CameraDetector.exe</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\CameraDetector4\bin\Debug\CameraDetector.exe.config">
+      <PackagePath>CameraDetector\CameraDetector.exe.config</PackagePath>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
