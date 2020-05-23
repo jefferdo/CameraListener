@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.QueryStringDotNET;
+using Microsoft.Toolkit.Uwp.Notifications;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -12,6 +14,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Web.Script.Serialization;
+using System.Xml;
+using Windows.UI.Notifications;
 
 namespace CameraDetector4
 {
@@ -21,6 +25,10 @@ namespace CameraDetector4
 
         private static void Main(string[] args)
         {
+            DesktopNotificationManagerCompat.RegisterAumidAndComServer<MyNotificationActivator>("WindowsNotifications.CameraDetector");
+            DesktopNotificationManagerCompat.RegisterActivator<MyNotificationActivator>();
+
+
             var ids = GetCameraIds();
             var machineName = System.Environment.MachineName;
             var ipAddress = getIP();
@@ -36,6 +44,12 @@ namespace CameraDetector4
 
             if (cameraNames.Count > 0)
             {
+                try
+                {
+                    SendNotification();
+                }
+                catch (Exception ex) { }
+
                 object data = new { MachineName = machineName, IPAddress = ipAddress, CameraNames = string.Join(",", cameraNames), TimeStamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") };
 
                 try
@@ -59,7 +73,7 @@ namespace CameraDetector4
             }
             Environment.Exit(0);
         }
-
+        #region GetCameraIds
         public static byte[] ObjectToByteArray(Object obj)
         {
             BinaryFormatter bf = new BinaryFormatter();
@@ -548,6 +562,108 @@ namespace CameraDetector4
             {
                 return Marshal.SizeOf(typeof(IntPtr)) == 8 ? true : false;
             }
+        }
+
+        #endregion
+
+        private static void SendNotification()
+        {
+            string title = "Your Camera is active";
+            string content = "If the camera got activated without your actions, please check for malware.";
+            //string image = "https://picsum.photos/364/202?image=883";
+            int conversationId = 5;
+
+            // Construct the toast content
+            ToastContent toastContent = new ToastContent()
+            {
+                // Arguments when the user taps body of toast
+                Launch = new QueryString()
+                {
+                    { "action", "viewConversation" },
+                    { "conversationId", conversationId.ToString() }
+
+                }.ToString(),
+
+                Visual = new ToastVisual()
+                {
+                    BindingGeneric = new ToastBindingGeneric()
+                    {
+                        Children =
+                        {
+                            new AdaptiveText()
+                            {
+                                Text = title
+                            },
+
+                            new AdaptiveText()
+                            {
+                                Text = content
+                            }
+
+                            //,new AdaptiveImage()
+                            //{
+                            //    // Non-Desktop Bridge apps cannot use HTTP images, so
+                            //    // we download and reference the image locally
+                            //    Source = await DownloadImageToDisk(image)
+                            //}
+                        }
+
+                        //,AppLogoOverride = new ToastGenericAppLogo()
+                        //{
+                        //    Source = await DownloadImageToDisk("https://unsplash.it/64?image=1005"),
+                        //    HintCrop = ToastGenericAppLogoCrop.Circle
+                        //}
+                    }
+                },
+
+                Actions = new ToastActionsCustom()
+                {
+                    Inputs =
+                    {
+                        new ToastTextBox("tbReply")
+                        {
+                            PlaceholderContent = "Type a response"
+                        }
+                    },
+
+                    Buttons =
+                    {
+                        // Note that there's no reason to specify background activation, since our COM
+                        // activator decides whether to process in background or launch foreground window
+                        new ToastButton("Reply", new QueryString()
+                        {
+                            { "action", "reply" },
+                            { "conversationId", conversationId.ToString() }
+
+                        }.ToString()),
+
+                        new ToastButton("Like", new QueryString()
+                        {
+                            { "action", "like" },
+                            { "conversationId", conversationId.ToString() }
+
+                        }.ToString())
+
+                        //new ToastButton("View", new QueryString()
+                        //{
+                        //    { "action", "viewImage" },
+                        //    { "imageUrl", image }
+
+                        //}.ToString())
+                    }
+                }
+            };
+
+            // Make sure to use Windows.Data.Xml.Dom
+            var doc = new XmlDocument();
+            doc.LoadXml(toastContent.GetContent());
+            Windows.Data.Xml.Dom.XmlDocument x = new Windows.Data.Xml.Dom.XmlDocument();
+            x.LoadXml(toastContent.GetContent());
+            // And create the toast notification
+            var toast = new ToastNotification(x);
+
+            // And then show it
+            DesktopNotificationManagerCompat.CreateToastNotifier().Show(toast);
         }
     }
 }
