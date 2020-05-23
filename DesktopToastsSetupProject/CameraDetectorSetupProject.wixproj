@@ -6,8 +6,9 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>6592e67d-a611-4643-b73f-3f1a7c1c5f50</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>DesktopToastsSetupProject</OutputName>
+    <OutputName>CameraDetector</OutputName>
     <OutputType>Package</OutputType>
+    <Name>CameraDetectorSetupProject</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>

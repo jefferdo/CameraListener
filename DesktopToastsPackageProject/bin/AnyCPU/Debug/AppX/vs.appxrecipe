@@ -31,7 +31,7 @@
     <AppXManifest Include="D:\MyProjects\camera-Jeff\DesktopToastsPackageProject\bin\AnyCPU\Debug\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2020-05-23T05:42:20.610</Modified>
+      <Modified>2020-05-23T06:10:51.692</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +102,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\CameraDetector4\bin\Debug\CameraDetector.exe">
       <PackagePath>CameraDetector\CameraDetector.exe</PackagePath>
-      <Modified>2020-05-23T05:42:19.936</Modified>
+      <Modified>2020-05-23T06:10:51.138</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\MyProjects\camera-Jeff\CameraDetector4\bin\Debug\CameraDetector.exe.config">
       <PackagePath>CameraDetector\CameraDetector.exe.config</PackagePath>
